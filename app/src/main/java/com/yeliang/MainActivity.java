@@ -170,6 +170,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private MediaRecorder mMediaRecorder;
+
     private void setUpMediaRecorder() {
         mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
@@ -401,7 +402,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void startPreview() {
 
-        Log.i(LOG_TAG,"startPreview");
+        Log.i(LOG_TAG, "startPreview");
         if (null == mCameraDevice || mTextureView.isAvailable() || mPreviewSize == null) {
             return;
         }
@@ -427,7 +428,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         @Override
         public void onConfigured(@NonNull CameraCaptureSession cameraCaptureSession) {
-            Log.i(LOG_TAG,"onConfigured");
+            Log.i(LOG_TAG, "onConfigured");
 
             mPreviewSession = cameraCaptureSession;
             updatePreview();
