@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private AutoFitTextureView mTextureView;
     private Button mButtonStatus;
+    private Button mButtonFinish;
 
 
     private boolean mIsRecording = false;
@@ -80,8 +81,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initView() {
         mTextureView = findViewById(R.id.texture_view);
         mButtonStatus = findViewById(R.id.btn_status);
+        mButtonFinish = findViewById(R.id.btn_finish);
 
         mButtonStatus.setOnClickListener(this);
+        mButtonFinish.setOnClickListener(this);
     }
 
     @Override
@@ -93,6 +96,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } else {
                     startRecording();
                 }
+                break;
+            case R.id.btn_finish:
+                finish();
                 break;
             default:
                 break;
@@ -165,6 +171,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onPause() {
+        Log.i(LOG_TAG,"onPause");
         super.onPause();
         stopBackgroundThread();
     }
