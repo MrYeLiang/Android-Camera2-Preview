@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             // Start a capture session
             // Once the session starts, we can update the UI and start recording
-            mCameraDevice.createCaptureSession(surfaces, stateCallback, mBackGroundHandler);
+            mCameraDevice.createCaptureSession(surfaces, recorderSessionStateCallback, mBackGroundHandler);
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
@@ -403,7 +403,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void startPreview() {
 
         Log.i(LOG_TAG, "startPreview");
-        if (null == mCameraDevice || mTextureView.isAvailable() || mPreviewSize == null) {
+        if (null == mCameraDevice || !mTextureView.isAvailable() || mPreviewSize == null) {
             return;
         }
 
@@ -418,13 +418,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Surface previewSurface = new Surface(texture);
             mPreviewBuilder.addTarget(previewSurface);
 
-            mCameraDevice.createCaptureSession(Collections.singletonList(previewSurface), stateCallback, mBackGroundHandler);
+            mCameraDevice.createCaptureSession(Collections.singletonList(previewSurface), previewSessionStateCallback, mBackGroundHandler);
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
     }
 
-    private CameraCaptureSession.StateCallback stateCallback = new CameraCaptureSession.StateCallback() {
+    private CameraCaptureSession.StateCallback recorderSessionStateCallback = new CameraCaptureSession.StateCallback() {
 
         @Override
         public void onConfigured(@NonNull CameraCaptureSession cameraCaptureSession) {
@@ -443,6 +443,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     mMediaRecorder.start();
                 }
             });
+        }
+
+        @Override
+        public void onConfigureFailed(@NonNull CameraCaptureSession cameraCaptureSession) {
+            Log.i(LOG_TAG, "onConfigureFailed");
+        }
+    };
+
+    private CameraCaptureSession.StateCallback previewSessionStateCallback = new CameraCaptureSession.StateCallback() {
+
+        @Override
+        public void onConfigured(@NonNull CameraCaptureSession cameraCaptureSession) {
+            Log.i(LOG_TAG, "onConfigured");
+
+            mPreviewSession = cameraCaptureSession;
+            updatePreview();
         }
 
         @Override
